@@ -1,14 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import formidable, { File } from "formidable";
 import { esArchivoTxt } from 'Steven/utils/validateFile';
-import { convertTxtToJSON } from 'Steven/services/analyzer-service';
+import AnalyzerService, { convertTxtToJSON } from 'Steven/services/analyzer-service';
 import fs from "fs/promises";
+import { count } from 'console';
 
 export const config = {
   api: {
     bodyParser: false, 
   },
 };
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -42,12 +44,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Convertir el contenido del archivo a JSON
     const messages = convertTxtToJSON(fileContent);
+    const analyzerService = new AnalyzerService(fileContent);
+    const size = analyzerService.countMessages();
+    const days = analyzerService.countDays();
 
-    return res.status(200).json({ data: messages });
+    return res.status(200).json({ data: messages, count: size, days: days });
   } catch (error) {
     console.error("Error al procesar la solicitud:", error);
     return res.status(500).json({ message: "Error al procesar la solicitud" });
   }
 }
+
+
 
 
