@@ -53,35 +53,25 @@ export default class AnalyzerService {
   messagesByHour() {
     const messagesByHour: Record<string, number> = {};
   
+    // Crear claves iniciales de 0 a.m. a 11 p.m.
+    for (let i = 0; i < 24; i++) {
+      const key = i <= 11 ? `${i} a. m.` : i === 12 ? `12 p. m.` : `${i - 12} p. m.`;
+      messagesByHour[key] = 0;
+    }
+  
     this.chat.forEach((message) => {
-      const [time, rawPeriod] = message.hora.split(" "); 
+      const [time, rawPeriod] = message.hora.split(" ");
       const period = rawPeriod?.trim(); 
       let [hour] = time.split(":"); 
       hour = parseInt(hour, 10); 
-  
-    
-      if (period === "p. m." && hour !== 12) {
-        hour += 12; 
-      } else if (period === "a. m." && hour === 12) {
-        hour = 0; 
-      }
-  
-      const formattedHour = hour.toString().padStart(2, "0"); 
-  
-      if (!messagesByHour[formattedHour]) {
-        messagesByHour[formattedHour] = 0;
-      }
-      messagesByHour[formattedHour]++;
+      
+
+      const generatedKey = `${hour} ${period}`.replace(/\s+/g, " ").trim();
+
+      messagesByHour[generatedKey] = (messagesByHour[generatedKey] || 0) + 1;
     });
   
-    const orderedMessages = Object.entries(messagesByHour)
-      .sort((a, b) => b[1] - a[1]) 
-      .reduce((acc, [hour, count]) => {
-        acc[hour] = count; 
-        return acc;
-      }, {} as Record<string, number>);
-  
-    return orderedMessages;
+    return messagesByHour;
   }
   
 }

@@ -57,16 +57,16 @@ export default async function handler(
     const days = analyzerService.countDays();
     const messagesPerMonth = analyzerService.countMessagesByMonth();
     const messagesByYear = analyzerService.countMessagesByYear();
-    const hoursWithMostMessages = analyzerService.messagesByHour();
+    const messagesByHour = analyzerService.messagesByHour();
 
     return res
       .status(200)
       .json({
         count: size,
         days: days,
-        messagesPerMonth: messagesPerMonth,
+        messagesByMonth: messagesPerMonth,
         messagesByYear: messagesByYear,
-        hoursWithMostMessages: hoursWithMostMessages,
+        messagesByHour: messagesByHour,
       });
   } catch (error) {
     console.error("Error al procesar la solicitud:", error);
