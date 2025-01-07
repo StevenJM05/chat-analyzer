@@ -7,7 +7,7 @@ import Dashboard from "./Dashboard";
 
 const Home = () => {
 
-  const [showStats, setShowStats] = React.useState(true);
+  const [showStats, setShowStats] = React.useState(false);
   const [stats, setStats] = React.useState(null);
 
   const submit = (file: any) => {
@@ -43,8 +43,7 @@ const Home = () => {
         />
         <Uploader onSubmit={submit} />
       </div>
-      {
-        showStats && (
+      {showStats && stats != null && (
           <Dashboard stats={stats}/>
         )
       }
