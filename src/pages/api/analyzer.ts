@@ -47,8 +47,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const analyzerService = new AnalyzerService(fileContent);
     const size = analyzerService.countMessages();
     const days = analyzerService.countDays();
+    const messagesPerMonth = analyzerService.countMessagesByMonth();
+    const messagesByYear = analyzerService.countMessagesByYear();
 
-    return res.status(200).json({ data: messages, count: size, days: days });
+    return res.status(200).json({ count: size, days: days, messagesPerMonth: messagesPerMonth, messagesByYear: messagesByYear, data: messages });
   } catch (error) {
     console.error("Error al procesar la solicitud:", error);
     return res.status(500).json({ message: "Error al procesar la solicitud" });
