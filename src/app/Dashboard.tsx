@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Row, Col, Statistic } from 'antd';
+import { Card, Row, Col, Statistic, Modal } from 'antd';
 import Chart from 'react-apexcharts';
 
 interface DashboardProps {
@@ -10,9 +10,10 @@ interface DashboardProps {
     messagesByYear: Record<string, number>;
     messagesByHour: Record<string, number>;
   };
+  open: boolean;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ stats }) => {
+const Dashboard: React.FC<DashboardProps> = ({ stats, open }) => {
   const totalMessages = stats.count;
   const totalDays = stats.days;
   const messagesPerMonth = stats.messagesByMonth;
@@ -41,7 +42,7 @@ const Dashboard: React.FC<DashboardProps> = ({ stats }) => {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ marginTop: '20px' }}>
       <Row gutter={16}>
         <Col span={8}>
           <Card>
