@@ -3,12 +3,14 @@ import React from "react";
 import Uploader from "./Uploader";
 import Title from "antd/es/typography/Title";
 import Text from "antd/es/typography/Text";
-import { Alert, Modal, Space } from "antd";
+import { Alert, Button, Modal, Space } from "antd";
 import { WhatsAppOutlined } from "@ant-design/icons";
 import Dashboard from "./Dashboard";
+import HomeSteps from "./Steps";
 
 const Home = () => {
 
+  const [showSteps, setShowSteps] = React.useState(false);
   const [showStats, setShowStats] = React.useState(false);
   const [stats, setStats] = React.useState(null);
 
@@ -32,7 +34,7 @@ const Home = () => {
 
   return (
     <div>
-      <div style={{ maxWidth: 800, margin: "50px auto", padding: "20px" }}>
+      <div style={{ maxWidth: 1024, margin: "50px auto", padding: "20px" }}>
         <div style={{ textAlign: "center", marginBottom: "20px" }}>
           <Title level={1}>Chat Analyzer</Title>
           <Space>
@@ -53,19 +55,30 @@ const Home = () => {
           showIcon
           style={{ marginBottom: "20px" }}
         />
-        <Uploader onSubmit={submit} />
+        {
+          showSteps ? (
+            <HomeSteps />
+          ) :
+            (
+              <Button type="primary" onClick={() => setShowSteps(true)}>
+                Comenzar
+              </Button>
+            )
+        }
       </div>
-      {showStats && stats != null && (
-        <Modal
-          title="Resultados"
-          footer={null}
-          open={showStats}
-          onCancel={handleClose}
-          width={800}
-        >
-          <Dashboard open={showStats} stats={stats} />
-        </Modal>
-      )
+
+      {
+        showStats && stats != null && (
+          <Modal
+            title="Resultados"
+            footer={null}
+            open={showStats}
+            onCancel={handleClose}
+            width={800}
+          >
+            <Dashboard open={showStats} stats={stats} />
+          </Modal>
+        )
       }
     </div>
   );
