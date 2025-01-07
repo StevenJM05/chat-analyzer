@@ -67,7 +67,6 @@ export default async function handler(
         messagesPerMonth: messagesPerMonth,
         messagesByYear: messagesByYear,
         hoursWithMostMessages: hoursWithMostMessages,
-        data: messages,
       });
   } catch (error) {
     console.error("Error al procesar la solicitud:", error);
