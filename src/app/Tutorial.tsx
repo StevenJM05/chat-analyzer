@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, message, Steps, Tabs, theme } from 'antd';
+import { Tabs } from 'antd';
 import { AndroidOutlined, AppleOutlined } from '@ant-design/icons';
 import Title from 'antd/es/typography/Title';
-import IOSTutorial from 'Steven/components/tutorials/IOSTutorial';
+import IOSTutorial from '@/components/tutorials/IOSTutorial';
 
 const Tutorial: React.FC = () => {
 
