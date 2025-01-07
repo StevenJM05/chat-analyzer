@@ -6,44 +6,35 @@ interface DashboardProps {
   stats: {
     count: number;
     days: number;
-    messagesPerMonth: Record<string, number>;
+    messagesByMonth: Record<string, number>;
     messagesByYear: Record<string, number>;
-    HoursWithMostMessages: Record<string, number>;
+    messagesByHour: Record<string, number>;
   };
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ stats }) => {
   const totalMessages = stats.count;
   const totalDays = stats.days;
-  const messagesPerMonth = stats.messagesPerMonth;
-  const messagesPerDay = stats.messagesByYear;
-  const messagesPerHour = stats.HoursWithMostMessages;
+  const messagesPerMonth = stats.messagesByMonth;
+  const messagesPerYear = stats.messagesByYear;
+  const messagesPerHour = stats.messagesByHour;
 
   // messages per month
-  const options = {
-    chart: {
-      id: 'basic-bar',
-    },
+  const optionsMonth = {
     xaxis: {
       categories: Object.keys(messagesPerMonth),
     },
   };
 
-  // messages per day
-  const optionsMonth = {
-    chart: {
-      id: 'basic-bar',
-    },
+  // messages per year
+  const optionsYear = {
     xaxis: {
-      categories: Object.keys(messagesPerDay),
+      categories: Object.keys(messagesPerYear),
     },
   };
 
   // messages per hour
   const optionsHour = {
-    chart: {
-      id: 'basic-bar',
-    },
     xaxis: {
       categories: Object.keys(messagesPerHour),
     },
@@ -69,20 +60,21 @@ const Dashboard: React.FC<DashboardProps> = ({ stats }) => {
         </Col>
       </Row>
 
+      <Card style={{ marginTop: '20px' }}>
+        <Chart options={optionsHour} series={[{ name: 'Mensajes', data: Object.values(messagesPerHour) }]} type="bar" height={350} />
+      </Card>
+
       <Row gutter={16} style={{ marginTop: '20px' }}>
-        <Col span={8}>
+        <Col span={12}>
           <Card>
-            <Chart options={options} series={[{ name: 'Mensajes', data: Object.values(messagesPerDay) }]} type="line" height={350} />
+            <Chart options={optionsYear} series={[{ name: 'Mensajes', data: Object.values(messagesPerYear) }]} type="bar" height={350} />
+
           </Card>
         </Col>
-        <Col span={8}>
+        <Col span={12}>
           <Card>
-            <Chart options={optionsMonth} series={[{ name: 'Mensajes', data: Object.values(messagesPerMonth) }]} type="line" height={350} />
-          </Card>
-        </Col>
-        <Col span={8}>
-          <Card>
-            <Chart options={optionsHour} series={[{ name: 'Mensajes', data: Object.values(messagesPerHour) }]} type="line" height={350} />
+            <Chart options={optionsMonth} series={[{ name: 'Mensajes', data: Object.values(messagesPerMonth) }]} type="bar" height={350} />
+
           </Card>
         </Col>
       </Row>
