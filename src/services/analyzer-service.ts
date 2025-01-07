@@ -50,7 +50,7 @@ export default class AnalyzerService {
     return messagesByYear;
   }
   
-  HoursWithMostMessages() {
+  hoursWithMostMessages() {
     const messagesByHour: Record<string, number> = {};
     this.chat.forEach((message) => {
       const hour = message.hora.split(":")[0]; 
@@ -68,8 +68,6 @@ export default class AnalyzerService {
       mensajes: count,
     }));
   }
-  
-  
 }
 
 export const convertTxtToJSON = (

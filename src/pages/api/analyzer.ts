@@ -57,7 +57,7 @@ export default async function handler(
     const days = analyzerService.countDays();
     const messagesPerMonth = analyzerService.countMessagesByMonth();
     const messagesByYear = analyzerService.countMessagesByYear();
-    const HoursWithMostMessages = analyzerService.HoursWithMostMessages();
+    const hoursWithMostMessages = analyzerService.hoursWithMostMessages();
 
     return res
       .status(200)
@@ -66,7 +66,7 @@ export default async function handler(
         days: days,
         messagesPerMonth: messagesPerMonth,
         messagesByYear: messagesByYear,
-        HoursWithMostMessages: HoursWithMostMessages,
+        hoursWithMostMessages: hoursWithMostMessages,
         data: messages,
       });
   } catch (error) {
