@@ -1,5 +1,5 @@
-import { convertTxtToJSON } from "Steven/utils/fileUtils";
-import { DateUtils, MONTH_NAMES, getMonthName } from "Steven/utils/dateUtils"; 
+import { convertTxtToJSON } from "@/utils/fileUtils";
+import { DateUtils, MONTH_NAMES, getMonthName } from "@/utils/dateUtils"; 
 
 
 export default class AnalyzerService {

@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import formidable from "formidable";
-import { esArchivoTxt } from "Steven/utils/validateFile";
-import AnalyzerService from "Steven/services/analyzer-service";
+import { esArchivoTxt } from "@/utils/validateFile";
+import AnalyzerService from "@/services/analyzer-service";
 import fs from "fs/promises";
 
 export const config = {
