@@ -53,9 +53,9 @@ export default async function handler(
       .json({
         count: analyzerService.countMessages(),
         days: analyzerService.countDays(),
-        messagesPerMonth: analyzerService.countMessagesByMonth(),
+        messagesByMonth: analyzerService.countMessagesByMonth(),
         messagesByYear: analyzerService.countMessagesByYear(),
-        hoursWithMostMessages: analyzerService.messagesByHour(),
+        messagesByHour: analyzerService.messagesByHour(),
         messagesBySender: analyzerService.countMessagesBySender(),
       });
   } catch (error) {
