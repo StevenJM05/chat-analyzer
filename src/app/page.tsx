@@ -1,6 +1,6 @@
 'use client';
 import React from "react";
-import UploadSection from "./Uploader";
+import Uploader from "./Uploader";
 import Title from "antd/es/typography/Title";
 import { Alert } from "antd";
 import Dashboard from "./Dashboard";
@@ -8,6 +8,21 @@ import Dashboard from "./Dashboard";
 const Home = () => {
 
   const [showStats, setShowStats] = React.useState(true);
+  const [stats, setStats] = React.useState(null);
+
+  const submit = (file: any) => {
+    setShowStats(true);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    fetch("api/analyzer", {
+      method: "POST",
+      body: formData,
+    }).then((response) => response.json())
+      .then((data) => setStats(data));
+      
+  }
 
   return (
     <div>
@@ -26,11 +41,11 @@ const Home = () => {
           showIcon
           style={{ marginBottom: "20px" }}
         />
-        <UploadSection />
+        <Uploader onSubmit={submit} />
       </div>
       {
         showStats && (
-          <Dashboard />
+          <Dashboard stats={stats}/>
         )
       }
     </div>

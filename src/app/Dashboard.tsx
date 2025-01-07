@@ -2,7 +2,12 @@ import React from 'react';
 import { Card, Row, Col, Statistic } from 'antd';
 import Chart from 'react-apexcharts';
 
-const Dashboard = () => {
+interface DashboardProps {
+  stats: any;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ stats: any }) => {
+  console.log(stats);
   const totalMessages = 150;
   const totalDays = 20;
   const totalHours = 100;
