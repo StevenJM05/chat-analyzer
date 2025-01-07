@@ -1,11 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import formidable, { File } from "formidable";
+import formidable from "formidable";
 import { esArchivoTxt } from "Steven/utils/validateFile";
-import AnalyzerService, {
-  convertTxtToJSON,
-} from "Steven/services/analyzer-service";
+import AnalyzerService from "Steven/services/analyzer-service";
 import fs from "fs/promises";
-import { count } from "console";
 
 export const config = {
   api: {
@@ -49,24 +46,17 @@ export default async function handler(
         .json({ message: "El archivo no es un archivo .txt" });
     }
     const fileContent = await fs.readFile(file.filepath, "utf-8");
-
-    // Convertir el contenido del archivo a JSON
-    const messages = convertTxtToJSON(fileContent);
     const analyzerService = new AnalyzerService(fileContent);
-    const size = analyzerService.countMessages();
-    const days = analyzerService.countDays();
-    const messagesPerMonth = analyzerService.countMessagesByMonth();
-    const messagesByYear = analyzerService.countMessagesByYear();
-    const hoursWithMostMessages = analyzerService.messagesByHour();
 
     return res
       .status(200)
       .json({
-        count: size,
-        days: days,
-        messagesPerMonth: messagesPerMonth,
-        messagesByYear: messagesByYear,
-        hoursWithMostMessages: hoursWithMostMessages,
+        count: analyzerService.countMessages(),
+        days: analyzerService.countDays(),
+        messagesPerMonth: analyzerService.countMessagesByMonth(),
+        messagesByYear: analyzerService.countMessagesByYear(),
+        hoursWithMostMessages: analyzerService.messagesByHour(),
+        messagesBySender: analyzerService.countMessagesBySender(),
       });
   } catch (error) {
     console.error("Error al procesar la solicitud:", error);
