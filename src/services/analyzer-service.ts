@@ -50,6 +50,25 @@ export default class AnalyzerService {
     return messagesByYear;
   }
   
+  HoursWithMostMessages() {
+    const messagesByHour: Record<string, number> = {};
+    this.chat.forEach((message) => {
+      const hour = message.hora.split(":")[0]; 
+      if (!messagesByHour[hour]) {
+        messagesByHour[hour] = 0;
+      }
+      messagesByHour[hour]++;
+    });
+  
+    const sortedHours = Object.entries(messagesByHour)
+      .sort((a, b) => b[1] - a[1]);
+      
+    return sortedHours.map(([hour, count]) => ({
+      hora: `${hour}:00`, 
+      mensajes: count,
+    }));
+  }
+  
   
 }
 
