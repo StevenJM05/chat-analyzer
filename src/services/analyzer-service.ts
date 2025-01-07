@@ -21,54 +21,68 @@ export default class AnalyzerService {
 
   countMessagesByMonth() {
     const messagesByMonth: Record<string, number> = {};
-  
+
     this.chat.forEach((message) => {
       const [day, month, year] = message.fecha.split("/");
-  
-      const key = `${month}`; 
+
+      const key = `${month}`;
       if (!messagesByMonth[key]) {
         messagesByMonth[key] = 0;
       }
       messagesByMonth[key]++;
     });
-  
+
     return messagesByMonth;
   }
 
   countMessagesByYear() {
     const messagesByYear: Record<string, number> = {};
-  
+
     this.chat.forEach((message) => {
-      const year = message.fecha.split("/")[2]; 
-  
+      const year = message.fecha.split("/")[2];
+
       if (!messagesByYear[year]) {
         messagesByYear[year] = 0;
       }
       messagesByYear[year]++;
     });
-  
+
     return messagesByYear;
   }
-  
-  HoursWithMostMessages() {
+
+  messagesByHour() {
     const messagesByHour: Record<string, number> = {};
+  
     this.chat.forEach((message) => {
-      const hour = message.hora.split(":")[0]; 
-      if (!messagesByHour[hour]) {
-        messagesByHour[hour] = 0;
+      const [time, rawPeriod] = message.hora.split(" "); 
+      const period = rawPeriod?.trim(); 
+      let [hour] = time.split(":"); 
+      hour = parseInt(hour, 10); 
+  
+    
+      if (period === "p. m." && hour !== 12) {
+        hour += 12; 
+      } else if (period === "a. m." && hour === 12) {
+        hour = 0; 
       }
-      messagesByHour[hour]++;
+  
+      const formattedHour = hour.toString().padStart(2, "0"); 
+  
+      if (!messagesByHour[formattedHour]) {
+        messagesByHour[formattedHour] = 0;
+      }
+      messagesByHour[formattedHour]++;
     });
   
-    const sortedHours = Object.entries(messagesByHour)
-      .sort((a, b) => b[1] - a[1]);
-      
-    return sortedHours.map(([hour, count]) => ({
-      hora: `${hour}:00`, 
-      mensajes: count,
-    }));
-  }
+    const orderedMessages = Object.entries(messagesByHour)
+      .sort((a, b) => b[1] - a[1]) 
+      .reduce((acc, [hour, count]) => {
+        acc[hour] = count; 
+        return acc;
+      }, {} as Record<string, number>);
   
+    return orderedMessages;
+  }
   
 }
 

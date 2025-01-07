@@ -57,7 +57,7 @@ export default async function handler(
     const days = analyzerService.countDays();
     const messagesPerMonth = analyzerService.countMessagesByMonth();
     const messagesByYear = analyzerService.countMessagesByYear();
-    const HoursWithMostMessages = analyzerService.HoursWithMostMessages();
+    const hoursWithMostMessages = analyzerService.messagesByHour();
 
     return res
       .status(200)
@@ -66,8 +66,7 @@ export default async function handler(
         days: days,
         messagesPerMonth: messagesPerMonth,
         messagesByYear: messagesByYear,
-        HoursWithMostMessages: HoursWithMostMessages,
-        data: messages,
+        hoursWithMostMessages: hoursWithMostMessages,
       });
   } catch (error) {
     console.error("Error al procesar la solicitud:", error);
