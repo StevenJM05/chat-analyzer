@@ -1,95 +1,54 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+import React from "react";
+import Uploader from "./Uploader";
+import Title from "antd/es/typography/Title";
+import { Alert } from "antd";
+import Dashboard from "./Dashboard";
 
-export default function Home() {
+const Home = () => {
+
+  const [showStats, setShowStats] = React.useState(false);
+  const [stats, setStats] = React.useState(null);
+
+  const submit = (file: any) => {
+    setShowStats(true);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    fetch("api/analyzer", {
+      method: "POST",
+      body: formData,
+    }).then((response) => response.json())
+      .then((data) => setStats(data));
+      
+  }
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+    <div>
+      <div style={{ maxWidth: 800, margin: "50px auto", padding: "20px" }}>
+        <div style={{ textAlign: "center", marginBottom: "20px" }}>
+          <Title>Chat Analyzer</Title>
+          <Title level={5}>
+            Analiza tu chat de <strong>WhatsApp</strong> en segundos. Obtén
+            información sobre tus chats con gráficos interactivos, estadísticas
+            gratuitas.
+          </Title>
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <Alert
+          description="Los datos de tu chat no son guardados en nuestros servidores, solamente se suben para ser analizados y luego se eliminan."
+          type="info"
+          showIcon
+          style={{ marginBottom: "20px" }}
+        />
+        <Uploader onSubmit={submit} />
+      </div>
+      {showStats && stats != null && (
+          <Dashboard stats={stats}/>
+        )
+      }
     </div>
   );
-}
+};
+
+export default Home;
