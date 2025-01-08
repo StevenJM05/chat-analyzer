@@ -1,6 +1,7 @@
 import React from 'react';
-import { Card, Row, Col, Statistic } from 'antd';
+import { Card, Row, Col, Statistic, Modal } from 'antd';
 import Chart from 'react-apexcharts';
+import { ApexOptions } from "apexcharts";
 
 interface DashboardProps {
   stats: {
@@ -9,6 +10,7 @@ interface DashboardProps {
     messagesByMonth: Record<string, number>;
     messagesByYear: Record<string, number>;
     messagesByHour: Record<string, number>;
+    messagesBySender: Record<string, number>;
   };
 }
 
@@ -18,6 +20,7 @@ const Dashboard: React.FC<DashboardProps> = ({ stats }) => {
   const messagesPerMonth = stats.messagesByMonth;
   const messagesPerYear = stats.messagesByYear;
   const messagesPerHour = stats.messagesByHour;
+  const messagesPerSender = stats.messagesBySender;
 
   // messages per month
   const optionsMonth = {
@@ -40,8 +43,34 @@ const Dashboard: React.FC<DashboardProps> = ({ stats }) => {
     },
   };
 
+  //messages per sender
+  const senders = Object.keys(messagesPerSender);
+  const series = Object.values(messagesPerSender);
+  const options: ApexOptions = {
+    chart: {
+      type: "donut",
+    },
+    labels: senders,
+    legend: {
+      position: "bottom",
+    },
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 300,
+          },
+          legend: {
+            position: "bottom",
+          },
+        },
+      },
+    ],
+  };
+
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ marginTop: '20px' }}>
       <Row gutter={16}>
         <Col span={8}>
           <Card>
@@ -78,6 +107,11 @@ const Dashboard: React.FC<DashboardProps> = ({ stats }) => {
           </Card>
         </Col>
       </Row>
+
+      <Card style={{ marginTop: '20px'}}>
+          <Chart options={options} series={series} type="donut" width="500" />
+      </Card>
+
     </div>
   );
 };

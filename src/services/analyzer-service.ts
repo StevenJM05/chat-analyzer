@@ -34,7 +34,27 @@ export default class AnalyzerService {
       }
       return acc;
     }, {});
-    return messagesBySender;
+    
+    const orderedObject = Object.entries(messagesBySender);
+    orderedObject.sort((a, b) => b[1] - a[1]);
+    let sortData = Object.fromEntries(orderedObject);
+    const sortedKeys = Object.keys(sortData);
+
+    if(sortedKeys.length > 5){
+        const top5 : Record<string, number> = {}
+        sortedKeys.slice(0,5).forEach(key => {
+            top5[key] = sortData[key]
+        })
+      
+        top5["Otros"] = sortedKeys.slice(5, sortedKeys.length - 1).reduce((acc, value)=>{
+            acc = acc+sortData[value];
+            return acc;
+        }, 0)
+
+        sortData = top5
+    }
+    
+    return sortData;
   }
 
   countMessagesByMonth() {
