@@ -10,10 +10,9 @@ interface DashboardProps {
     messagesByYear: Record<string, number>;
     messagesByHour: Record<string, number>;
   };
-  open: boolean;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ stats, open }) => {
+const Dashboard: React.FC<DashboardProps> = ({ stats }) => {
   const totalMessages = stats.count;
   const totalDays = stats.days;
   const messagesPerMonth = stats.messagesByMonth;

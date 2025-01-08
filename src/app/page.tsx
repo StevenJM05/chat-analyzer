@@ -11,26 +11,6 @@ import HomeSteps from "./Steps";
 const Home = () => {
 
   const [showSteps, setShowSteps] = React.useState(false);
-  const [showStats, setShowStats] = React.useState(false);
-  const [stats, setStats] = React.useState(null);
-
-  const submit = (file: any) => {
-    setShowStats(true);
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    fetch("api/analyzer", {
-      method: "POST",
-      body: formData,
-    }).then((response) => response.json())
-      .then((data) => setStats(data));
-  }
-
-  const handleClose = () => {
-    setShowStats(false);
-    setStats(null);
-  }
 
   return (
     <div>
@@ -66,20 +46,6 @@ const Home = () => {
             )
         }
       </div>
-
-      {
-        showStats && stats != null && (
-          <Modal
-            title="Resultados"
-            footer={null}
-            open={showStats}
-            onCancel={handleClose}
-            width={800}
-          >
-            <Dashboard open={showStats} stats={stats} />
-          </Modal>
-        )
-      }
     </div>
   );
 };

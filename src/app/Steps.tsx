@@ -1,29 +1,13 @@
 import React, { useState } from 'react';
 import { Button, Steps, theme } from 'antd';
 import Tutorial from './Tutorial';
-
-const steps = [
-  {
-    title: 'Exportar Chat',
-    content: <Tutorial />,
-    nextLabel: 'Listo, ya tengo mi chat exportado',
-  },
-  {
-    title: 'Subir Archivo',
-    content: 'Second-content',
-    nextLabel: 'Ver Resultados',
-    previousLabel: 'Volver'
-  },
-  {
-    title: 'Resultados',
-    content: 'Last-content',
-    previousLabel: 'Volver',
-  },
-];
+import Uploader from './Uploader';
+import Dashboard from './Dashboard';
 
 const HomeSteps: React.FC = () => {
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
+  const [stats, setStats] = useState<any>(null);
 
   const next = () => {
     setCurrent(current + 1);
@@ -33,7 +17,19 @@ const HomeSteps: React.FC = () => {
     setCurrent(current - 1);
   };
 
-  const items = steps.map((item) => ({ key: item.title, title: item.title }));
+  const submit = (file: any) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    fetch('/api/analyzer', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setStats(data);
+      });
+  };
 
   const contentStyle: React.CSSProperties = {
     lineHeight: '260px',
@@ -48,17 +44,32 @@ const HomeSteps: React.FC = () => {
 
   return (
     <>
-      <Steps current={current} items={items} />
-      <div style={contentStyle}>{steps[current].content}</div>
+      <Steps
+        current={current}
+        items={[
+          { title: 'Exportar Chat' },
+          { title: 'Subir Archivo' },
+          { title: 'Resultados' },
+        ]}
+      />
+      <div style={contentStyle}>
+        {current === 0 && <Tutorial />}
+        {current === 1 && <Uploader onSubmit={submit} />}
+        {current === 2 && stats && <Dashboard stats={stats} />}
+      </div>
       <div style={{ marginTop: 24 }}>
-        {steps[current].nextLabel && (
-          <Button type="primary" onClick={() => next()}>
-            {steps[current].nextLabel}
+        {current < 2 && ( // Mostrar botón "Siguiente" solo si no está en el último paso
+          <Button
+            type="primary"
+            onClick={next}
+            disabled={current === 1 && !stats} // Deshabilitar si está en el paso 2 y aún no hay datos
+          >
+            {current === 0 ? 'Listo, ya tengo mi chat exportado' : 'Ver Resultados'}
           </Button>
         )}
-        {steps[current].previousLabel && (
-          <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
-            {steps[current].previousLabel}
+        {current > 0 && ( // Mostrar botón "Volver" solo si no está en el primer paso
+          <Button style={{ margin: '0 8px' }} onClick={prev}>
+            Volver
           </Button>
         )}
       </div>
