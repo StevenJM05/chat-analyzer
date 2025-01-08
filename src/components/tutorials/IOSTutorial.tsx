@@ -44,7 +44,7 @@ const IOSTutorial: React.FC = () => {
     />
       </Col>
       <Col span={12}>
-        <Image src={items[current].image} alt={items[current].title} height={600}/>
+        <Image src={items[current].image} alt={items[current].title} height={500}/>
       </Col>
     </Row>
   );

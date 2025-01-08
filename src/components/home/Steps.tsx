@@ -32,8 +32,6 @@ const HomeSteps: React.FC = () => {
   };
 
   const contentStyle: React.CSSProperties = {
-    lineHeight: '260px',
-    textAlign: 'center',
     color: token.colorTextTertiary,
     backgroundColor: token.colorFillAlter,
     borderRadius: token.borderRadiusLG,
@@ -53,7 +51,7 @@ const HomeSteps: React.FC = () => {
         ]}
       />
       <div style={contentStyle}>
-        {current === 0 && <Tutorial />}
+        {current === 0 && <Tutorial onFileReady={next} />}
         {current === 1 && <Uploader onSubmit={submit} />}
         {current === 2 && stats && <Dashboard stats={stats} />}
       </div>

@@ -1,10 +1,15 @@
 import React from 'react';
-import { Tabs } from 'antd';
-import { AndroidOutlined, AppleOutlined } from '@ant-design/icons';
+import { Button, Tabs } from 'antd';
+import { AndroidOutlined, AppleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import Title from 'antd/es/typography/Title';
 import IOSTutorial from '@/components/tutorials/IOSTutorial';
+import Paragraph from 'antd/es/typography/Paragraph';
 
-const Tutorial: React.FC = () => {
+interface TutorialProps {
+  onFileReady: () => void;
+}
+
+const Tutorial: React.FC<TutorialProps> = ({ onFileReady }) => {
 
   const tabs = [
     {
@@ -22,13 +27,26 @@ const Tutorial: React.FC = () => {
   ];
 
   return (
-    <div>
-      <Title level={3}>Como Exportar tu chat de WhatsApp</Title>
+    <>
+      <Title level={3}>Exportar tu chat de WhatsApp</Title>
+      <Title level={5}>
+        Para poder analizar tu chat de WhatsApp, primero necesitas exportarlo
+      </Title>
+      <Paragraph>
+        Ya tienes tu chat exportado? Haz clic en el botón de abajo para continuar
+      </Paragraph>
+      <Button type='primary' style={{ marginBottom: '20px', marginTop: '10px' }} onClick={onFileReady}>
+        <CheckCircleOutlined />
+        Continuar
+      </Button>
+      <Paragraph>
+        Si aún no tienes tu chat exportado, sigue los siguientes pasos:
+      </Paragraph>
       <Tabs
         defaultActiveKey="2"
         items={tabs}
       />
-    </div>
+    </>
 
   );
 };
