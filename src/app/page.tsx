@@ -1,12 +1,12 @@
 'use client';
 import React from "react";
-import Uploader from "./Uploader";
+import Uploader from "../components/home/Uploader";
 import Title from "antd/es/typography/Title";
 import Text from "antd/es/typography/Text";
 import { Alert, Button, Modal, Space } from "antd";
 import { WhatsAppOutlined } from "@ant-design/icons";
-import Dashboard from "./Dashboard";
-import HomeSteps from "./Steps";
+import Dashboard from "../components/home/Dashboard";
+import HomeSteps from "../components/home/Steps";
 
 const Home = () => {
 
