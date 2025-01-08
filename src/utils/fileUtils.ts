@@ -1,3 +1,5 @@
+import AdmZip from "adm-zip";
+
 export const convertTxtToJSON = (
   content: string
 ): Array<Record<string, any>> => {
@@ -72,3 +74,19 @@ export const convertTxtToJSON = (
     throw new Error("No se pudo procesar el archivo TXT");
   }
 };
+
+export function extraerTxtDeZip(zipPath: string): string | null {
+  const zip = new AdmZip(zipPath);
+  const zipEntries = zip.getEntries();
+
+  const txtFiles = zipEntries.filter((entry) =>
+    entry.entryName.toLowerCase().endsWith(".txt")
+  );
+
+  if (txtFiles.length === 0) {
+    return null; 
+  }
+
+  return txtFiles[0].getData().toString("utf-8");
+}
+
