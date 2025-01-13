@@ -6,23 +6,23 @@ const AndroidTutorial: React.FC = () => {
   const items = [
     {
       title: 'Abre WhatsApp y el chat o chat de grupo que deseas exportar> en la parte superior toca el nombre del chat.',
-      image: '/images/tutorials/android/1.png',
+      image: '/images/tutorials/ios/1.png',
     },
     {
       title: 'Desplázate hacia abajo y toca Exportar chat.',
-      image: '/images/tutorials/android/2.png',
+      image: '/images/tutorials/ios/2.png',
     },
     {
       title: 'Elige si deseas incluir o no los archivos multimedia.',
-      image: '/images/tutorials/android/3.png',
+      image: '/images/tutorials/ios/3.png',
     },
     {
       title: 'Selecciona en guardar en Archivos.',
-      image: '/images/tutorials/android/4.png',
+      image: '/images/tutorials/ios/4.png',
     },
     {
       title: 'Listo, ya tienes tu chat exportado.',
-      image: '/images/tutorials/android/5.png',
+      image: '/images/tutorials/ios/5.png',
     }
   ];
 
