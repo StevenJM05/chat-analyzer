@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import formidable from "formidable";
-import { esArchivoTxt } from "@/utils/validateFile";
+import { extraerTxtDeZip } from "@/utils/fileUtils";
+import { esArchivoTxt, esArchivoZip } from "@/utils/validateFile";
 import AnalyzerService from "@/services/analyzer-service";
 import fs from "fs/promises";
 
@@ -38,14 +39,23 @@ export default async function handler(
     }
 
     const file = Array.isArray(fileEntry) ? fileEntry[0] : fileEntry;
+    let fileContent: string | null = null;
 
-    // Validar si el archivo es un archivo .txt
-    if (!esArchivoTxt(file)) {
+    if (esArchivoZip(file)) {
+      fileContent = extraerTxtDeZip(file.filepath);
+
+      if (!fileContent) {
+        return res.status(400).json({
+          message: "El archivo .zip no contiene archivos .txt.",
+        });
+      }
+    } else if (esArchivoTxt(file)) {
+      fileContent = await fs.readFile(file.filepath, "utf-8");
+    } else {
       return res
         .status(400)
-        .json({ message: "El archivo no es un archivo .txt" });
+        .json({ message: "El archivo no es un .txt o .zip válido." });
     }
-    const fileContent = await fs.readFile(file.filepath, "utf-8");
     const analyzerService = new AnalyzerService(fileContent);
 
     return res
