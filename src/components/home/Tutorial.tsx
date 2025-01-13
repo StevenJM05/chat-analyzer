@@ -3,6 +3,7 @@ import { Button, Tabs } from 'antd';
 import { AndroidOutlined, AppleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import Title from 'antd/es/typography/Title';
 import IOSTutorial from '@/components/tutorials/IOSTutorial';
+import AndroidTutorial from '../tutorials/AndroidTutorial';
 import Paragraph from 'antd/es/typography/Paragraph';
 
 interface TutorialProps {
@@ -16,7 +17,7 @@ const Tutorial: React.FC<TutorialProps> = ({ onFileReady }) => {
       key: '1',
       label: 'Android',
       icon: <AndroidOutlined />,
-      children: 'Android',
+      children: <AndroidTutorial/>,
     },
     {
       key: '2',
