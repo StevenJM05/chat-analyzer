@@ -2,7 +2,7 @@
 import React from "react";
 import Title from "antd/es/typography/Title";
 import Text from "antd/es/typography/Text";
-import { Alert, Button, Card, Col, Modal, Row, Space } from "antd";
+import { Alert, Button, Card, Col, Row, Space } from "antd";
 import { WhatsAppOutlined } from "@ant-design/icons";
 import { FireOutlined } from "@ant-design/icons";
 import HomeSteps from "../components/home/Steps";

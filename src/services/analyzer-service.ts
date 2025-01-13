@@ -61,9 +61,9 @@ export default class AnalyzerService {
     const messagesByMonth: Record<string, number> = {};
   
     this.chat.forEach((message) => {
-      const [day, month, year] = message.fecha.split("/");
+      const [, month] = message.fecha.split("/"); 
       const monthIndex = parseInt(month, 10) - 1;
-      const monthName = getMonthName(monthIndex); 
+      const monthName = getMonthName(monthIndex);
   
       if (!messagesByMonth[monthName]) {
         messagesByMonth[monthName] = 0;
@@ -71,7 +71,7 @@ export default class AnalyzerService {
       messagesByMonth[monthName]++;
     });
   
-    // Ordenamos los resultados de Enero a Diciembre
+    
     const orderedMessagesByMonth: Record<string, number> = {};
     MONTH_NAMES.forEach((month) => {
       if (messagesByMonth[month] !== undefined) {
@@ -81,6 +81,7 @@ export default class AnalyzerService {
   
     return orderedMessagesByMonth;
   }
+  
 
   countMessagesByYear() {
     const messagesByYear: Record<string, number> = {};

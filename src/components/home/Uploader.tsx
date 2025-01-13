@@ -1,6 +1,6 @@
 import React from 'react';
 import { InboxOutlined } from '@ant-design/icons';
-import { Upload, message, Button } from 'antd';
+import { Upload, message } from 'antd';
 import Title from 'antd/es/typography/Title';
 import Paragraph from 'antd/es/typography/Paragraph';
 

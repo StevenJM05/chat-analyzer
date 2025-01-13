@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Row, Col, Statistic, Modal } from 'antd';
+import { Card, Row, Col, Statistic } from 'antd';
 import Chart from 'react-apexcharts';
 import { ApexOptions } from "apexcharts";
 
