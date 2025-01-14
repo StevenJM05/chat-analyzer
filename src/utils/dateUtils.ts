@@ -12,7 +12,7 @@ export class DateUtils {
       throw new Error(`Hora no válida: ${hora}`);
     }
 
-    let [_, hour, , period] = matchHora;
+    const [_, hour, , period] = matchHora;
     let hourNumber = parseInt(hour, 10);
 
     if (period.toLowerCase() === "p. m." && hourNumber !== 12) {

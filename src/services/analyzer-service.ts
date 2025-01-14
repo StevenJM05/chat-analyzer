@@ -116,7 +116,7 @@ export default class AnalyzerService {
           const hourKey = DateUtils.getHourKey(horaNormalizada);
           messagesByHour[hourKey]++;
         } catch (error) {
-          console.warn(`Error procesando hora: ${message.hora}`);
+          console.warn(`Error procesando hora: ${message.hora}`, error);
         }
       }
     });
