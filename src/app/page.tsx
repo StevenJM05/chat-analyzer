@@ -1,12 +1,14 @@
 'use client';
 import React from "react";
+import dynamic from "next/dynamic";
 import Title from "antd/es/typography/Title";
 import Text from "antd/es/typography/Text";
 import { Alert, Button, Card, Col, Row, Space } from "antd";
 import { WhatsAppOutlined } from "@ant-design/icons";
 import { FireOutlined } from "@ant-design/icons";
 import HomeSteps from "../components/home/Steps";
-import Chart from 'react-apexcharts';
+
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const demoChart1 = {
   series: [

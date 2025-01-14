@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
 import { Button, Steps, theme } from 'antd';
-import Tutorial from './Tutorial';
-import Uploader from './Uploader';
-import Dashboard from './Dashboard';
+import dynamic from 'next/dynamic';
+const Tutorial = dynamic(() => import('./Tutorial'), { ssr: false });
+const Uploader = dynamic(() => import('./Uploader'), { ssr: false });
+const Dashboard = dynamic(() => import('./Dashboard'), { ssr: false });
 
 const HomeSteps: React.FC = () => {
-  const { token } = theme.useToken();
+  const { token } = theme.useToken() || {
+    colorTextTertiary: '#000',
+    colorFillAlter: '#fff',
+    colorBorder: '#ddd',
+    borderRadiusLG: '8px',
+  };
+
   const [current, setCurrent] = useState(0);
   const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(false); 
 
   const next = () => {
     setCurrent(current + 1);
@@ -18,6 +26,12 @@ const HomeSteps: React.FC = () => {
   };
 
   const submit = (file: any) => {
+    if (typeof window === 'undefined') {
+      console.error('submit can only run in the browser.');
+      return;
+    }
+
+    setLoading(true);
     const formData = new FormData();
     formData.append('file', file);
 
@@ -28,7 +42,11 @@ const HomeSteps: React.FC = () => {
       .then((response) => response.json())
       .then((data) => {
         setStats(data);
-      });
+      })
+      .catch((error) => {
+        console.error('Error submitting file:', error);
+      })
+      .finally(() => setLoading(false));
   };
 
   const contentStyle: React.CSSProperties = {
@@ -53,19 +71,25 @@ const HomeSteps: React.FC = () => {
       <div style={contentStyle}>
         {current === 0 && <Tutorial onFileReady={next} />}
         {current === 1 && <Uploader onSubmit={submit} />}
-        {current === 2 && stats && <Dashboard stats={stats} />}
+        {current === 2 && (
+          stats ? (
+            <Dashboard stats={stats} />
+          ) : (
+            <p>No se encontraron resultados. Inténtalo de nuevo.</p>
+          )
+        )}
       </div>
       <div style={{ marginTop: 24 }}>
-        {current < 2 && ( // Mostrar botón "Siguiente" solo si no está en el último paso
+        {current < 2 && (
           <Button
             type="primary"
             onClick={next}
-            disabled={current === 1 && !stats} // Deshabilitar si está en el paso 2 y aún no hay datos
+            disabled={current === 1 && (!stats || loading)}
           >
-            {current === 0 ? 'Listo, ya tengo mi chat exportado' : 'Ver Resultados'}
+            {loading ? 'Cargando...' : current === 0 ? 'Listo, ya tengo mi chat exportado' : 'Ver Resultados'}
           </Button>
         )}
-        {current > 0 && ( // Mostrar botón "Volver" solo si no está en el primer paso
+        {current > 0 && (
           <Button style={{ margin: '0 8px' }} onClick={prev}>
             Volver
           </Button>
