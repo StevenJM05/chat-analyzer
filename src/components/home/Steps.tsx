@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Steps, theme } from 'antd';
+import { Button, Steps, theme, message } from 'antd';
 import dynamic from 'next/dynamic';
 const Tutorial = dynamic(() => import('./Tutorial'), { ssr: false });
 const Uploader = dynamic(() => import('./Uploader'), { ssr: false });
@@ -12,10 +12,27 @@ const HomeSteps: React.FC = () => {
     colorBorder: '#ddd',
     borderRadiusLG: '8px',
   };
-
+  
   const [current, setCurrent] = useState(0);
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(false); 
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const error = () => {
+    messageApi.open({
+      type: 'error',
+      content: 'No se ha podido procesar el archivo',
+    })
+  }
+
+  const success = () => {
+    messageApi
+      .open({
+        type: 'loading',
+        content: 'Action in progress..',
+        duration: 0,
+      })
+  };
 
   const next = () => {
     setCurrent(current + 1);
@@ -26,11 +43,12 @@ const HomeSteps: React.FC = () => {
   };
 
   const submit = (file: any) => {
+
     if (typeof window === 'undefined') {
       console.error('submit can only run in the browser.');
-      return;
+      return; 
     }
-
+    success();
     setLoading(true);
     const formData = new FormData();
     formData.append('file', file);
@@ -39,8 +57,17 @@ const HomeSteps: React.FC = () => {
       method: 'POST',
       body: formData,
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status === 400){
+            messageApi.destroy();
+            error();
+            throw new Error('Bad request');
+        }
+        return response.json();  
+      })
+      
       .then((data) => {
+        messageApi.destroy();
         setStats(data);
       })
       .catch((error) => {
@@ -79,8 +106,10 @@ const HomeSteps: React.FC = () => {
           )
         )}
       </div>
+      {contextHolder}
       <div style={{ marginTop: 24 }}>
         {current < 2 && (
+          
           <Button
             type="primary"
             onClick={next}

@@ -33,7 +33,7 @@ const Uploader: React.FC<UploaderProps> = ({ onSubmit }) => {
       <p className="ant-upload-drag-icon">
         <InboxOutlined />
       </p>
-      <Title level={4}>Arrastra tu chat en formato txt</Title>
+      <Title level={4}>Arrastra tu chat en formato txt o zip</Title>
       <Paragraph className="ant-upload-hint">
         Si tienes problemas para subir tu archivo, puedes ver este tutorial de como obtener tu chat
       </Paragraph>
